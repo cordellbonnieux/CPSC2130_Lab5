@@ -28,11 +28,11 @@ img.onload = () => {
         let alpha = rgba[i * 4 + 3]
 
         // every 25th pixel
-        if (i % 25 == 0) {
-            rgba[i * 4 + 0] = 0
-            rgba[i * 4 + 1] = 0
-            rgba[i * 4 + 2] = 255
-        }
+        // new print effect
+        filterNewsprint(i, rgba)
+
+        //THRESHOLD FILTER
+        filterThreshold(red, green, blue, rgba, i)
     }
     
     let canvasModified = document.createElement('canvas')
@@ -44,3 +44,26 @@ img.onload = () => {
 
     ctxModified.putImageData(imgData, 0, 0)
 }
+
+function filterNewsprint(i, rgba) {
+    if (i % 25 == 0) {
+        rgba[i * 4 + 0] = 0
+        rgba[i * 4 + 1] = 0
+        rgba[i * 4 + 2] = 255
+    }
+}
+
+function filterThreshold(red, green, blue, rgba, i) {
+    let brightness = red + green + blue
+    let threshold = (3 * 255) / 2
+    if (brightness > threshold) {
+        rgba[i * 4 + 0] = 255
+        rgba[i * 4 + 1] = 255
+        rgba[i * 4 + 2] = 255
+    } else {
+        rgba[i * 4 + 0] = 0
+        rgba[i * 4 + 1] = 0
+        rgba[i * 4 + 2] = 0
+    }
+}
+
