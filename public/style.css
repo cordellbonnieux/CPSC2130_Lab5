@@ -1,0 +1,13 @@
+html, body {
+    margin: 0;
+}
+
+#container {
+    margin: 0;
+    display: flex;
+    width: 100vw;
+}
+
+canvas {
+    width: 50vw;
+}

@@ -1,13 +1,48 @@
-let img = new Image()
+// the image
+const img = new Image()
 img.src = 'monkey.png'
+// canvas 1
+const canvas1 = document.createElement('canvas')
+const ctx1 = canvas1.getContext('2d')
+// canvas 2
+const canvas2 = document.createElement('canvas')
+const ctx2 = canvas2.getContext('2d')
+// add canvases to doc
+const container = document.getElementById('container')
+container.appendChild(canvas1)
+container.appendChild(canvas2)
+// add controls
+const controls = document.getElementById('controls')
+const buttons = ['task1', 'task2', 'task3', 'task4', 'task5', 'task6']
+buttons.forEach((task) => {
+    const wrap = create('div')
+    wrap.id = task
+    const text = create('p')
+    text.textContent = task
+    // add event listener next
+    wrap.appendChild(text)
+    controls.appendChild(wrap)
+})
 
+// create helper function
+function create(t, c, i) {
+    const html = document.createElement(t)
+    if (c) {
+        html.className = c
+    }
+    if (i) {
+        html.id = i
+    }
+    return html
+}
+
+/*
 img.onload = () => {
     let canvas = document.createElement('canvas')
     let ctx = canvas.getContext('2d')
 
-    canvas.width = img.width
-    canvas.height = img.height
-
+    //canvas.width = img.width
+    //canvas.height = img.height
     console.log(canvas.width, canvas.height)
     
     document.body.appendChild(canvas)
@@ -44,6 +79,7 @@ img.onload = () => {
 
     ctxModified.putImageData(imgData, 0, 0)
 }
+*/
 
 function filterNewsprint(i, rgba) {
     if (i % 25 == 0) {
