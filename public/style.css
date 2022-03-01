@@ -11,3 +11,15 @@ html, body {
 canvas {
     width: 50vw;
 }
+
+#controls {
+    display: flex;
+    justify-content: center;
+}
+
+#controls div {
+    font-size: 1.5em;
+    padding:5px 15px;
+    margin: 10px;
+    border: 1px solid #000;
+}
