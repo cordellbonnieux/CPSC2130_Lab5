@@ -40,14 +40,14 @@ img.onload = () => {
     ctx1.drawImage(img, 0, 0, canvas1.width, canvas1.height)
     //ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height)
 }
+
 /**
  * Handle Events
  */
 
 function handle(task) {
     // clear and reset the canvas
-    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-    ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height)
+    clearCanvas(canvas2, ctx2, img)
     // use filter
     switch (task) {
         case 'task1': // do something
@@ -60,6 +60,7 @@ function handle(task) {
 
 /**
 * FILTERS
+* params: r, g, b, a, i
 */
 /**
  * NEWSPRINT
@@ -101,7 +102,7 @@ function filterThreshold(red, green, blue, rgba, i) {
  */
 /**
  * Create - an html element
- * @param {*} t html tag
+ * @param {*} t tag
  * @param {*} c class
  * @param {*} i id
  * @returns html element
@@ -115,6 +116,45 @@ function create(t, c, i) {
         html.id = i
     }
     return html
+}
+
+/**
+ * Clears the param canvas
+ */
+function clearCanvas(canvas, context, image) {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height)
+}
+
+/**
+ * Apply a filter
+ * @param {canvas node} canvas 
+ * @param {canvas.context} context 
+ * @param {Image object} image 
+ * @param {function} filter
+ */
+function applyFilter(canvas, context, image, filter) {
+    // get data
+    const data = context.getImageData(0, 0, canvas.width, canvas.height)
+    // get rgba
+    const rgba = data.data
+    // get pixels
+    const pixels = image.width * image.height
+    // iterrate over pixels and apply filter
+    for (let i = 0; i < pixels; i++) {
+        const red = rgba[i * 4 + 0]
+        const green = rgba[i * 4 + 1]
+        const blue = rgba[i * 4 + 2]
+        const alpha = rgba[i * 4 + 3]
+        filter(red, green, blue, alpha, i)
+    }
+/*
+    canvasModified.width = img.width
+    canvasModified.height = img.height
+
+*/
+    // place filter on context/canvas
+    context.putImageData(data, 0, 0)
 }
 
 // old stuff:
