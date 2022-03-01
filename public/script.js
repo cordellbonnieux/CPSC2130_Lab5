@@ -26,7 +26,7 @@ buttons.forEach((task) => {
     wrap.id = task
     const text = create('p')
     text.textContent = task
-    wrap.addEventListener('click', (task) => handle(task))
+    wrap.addEventListener('click', () => handle(task))
     wrap.appendChild(text)
     controls.appendChild(wrap)
 })
@@ -45,9 +45,12 @@ img.onload = () => {
  */
 
 function handle(task) {
-    console.log('click')
+    // clear and reset the canvas
+    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+    ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height)
+    // use filter
     switch (task) {
-        case 'task1': canvas2.style.background = 'green'
+        case 'task1': // do something
             break;
         case 'task2': // do something
             break;
