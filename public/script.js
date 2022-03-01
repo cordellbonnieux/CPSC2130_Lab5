@@ -26,7 +26,7 @@ buttons.forEach((task) => {
     wrap.id = task
     const text = create('p')
     text.textContent = task
-    // add event listener next
+    wrap.addEventListener('click', (task) => handle(task))
     wrap.appendChild(text)
     controls.appendChild(wrap)
 })
@@ -38,7 +38,21 @@ buttons.forEach((task) => {
 img.onload = () => {
     // draw the pictures to the canvases
     ctx1.drawImage(img, 0, 0, canvas1.width, canvas1.height)
-    ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height)
+    //ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height)
+}
+/**
+ * Handle Events
+ */
+
+function handle(task) {
+    console.log('click')
+    switch (task) {
+        case 'task1': canvas2.style.background = 'green'
+            break;
+        case 'task2': // do something
+            break;
+        default: // do something, or nothing
+    }
 }
 
 /**
