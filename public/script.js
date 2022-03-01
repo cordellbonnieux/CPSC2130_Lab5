@@ -38,7 +38,7 @@ buttons.forEach((task) => {
 img.onload = () => {
     // draw the pictures to the canvases
     ctx1.drawImage(img, 0, 0, canvas1.width, canvas1.height)
-    //ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height)
+    ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height)
 }
 
 /**
@@ -50,7 +50,7 @@ function handle(task) {
     clearCanvas(canvas2, ctx2, img)
     // use filter
     switch (task) {
-        case 'task1': // do something
+        case 'task1': applyFilter(canvas2, ctx2, img, 'random')
             break;
         case 'task2': // do something
             break;
@@ -97,6 +97,14 @@ function filterThreshold(red, green, blue, rgba, i) {
     }
 }
 
+function filterRandom(r, g, b) {
+    // make sure this is doing it's job
+    console.log('this is called')
+    r = 0//Math.random() * r * 2
+    g = 0
+    b = 0
+}
+
 /**
  * HELPER FUCTIONS
  */
@@ -129,9 +137,9 @@ function clearCanvas(canvas, context, image) {
 /**
  * Apply a filter
  * @param {canvas node} canvas 
- * @param {canvas.context} context 
+ * @param {canvas.context object} context 
  * @param {Image object} image 
- * @param {function} filter
+ * @param {String} filter
  */
 function applyFilter(canvas, context, image, filter) {
     // get data
@@ -146,7 +154,13 @@ function applyFilter(canvas, context, image, filter) {
         const green = rgba[i * 4 + 1]
         const blue = rgba[i * 4 + 2]
         const alpha = rgba[i * 4 + 3]
-        filter(red, green, blue, alpha, i)
+
+        // select filter
+        switch (filter) {
+            case 'random': filterRandom(red, green, blue, alpha)
+            // the above is being called but the effect on the image is not evident
+            // add more later
+        }
     }
 /*
     canvasModified.width = img.width
