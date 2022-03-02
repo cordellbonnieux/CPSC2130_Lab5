@@ -20,7 +20,7 @@ container.appendChild(canvas2)
 
 // add controls
 const controls = document.getElementById('controls')
-const buttons = ['task1', 'task2', 'task3', 'task4', 'task5', 'task6', 'tasks7']
+const buttons = ['task1', 'task2', 'task3', 'task4', 'task5', 'task6', 'task7']
 buttons.forEach((task) => {
     const wrap = create('div')
     wrap.id = task
@@ -48,19 +48,25 @@ img.onload = () => {
 function handle(task) {
     // clear and reset the canvas
     clearCanvas(canvas2, ctx2, img)
-    // use filter
-    switch (task) {
-        case 'task1': applyFilter(canvas2, ctx2, img, 'random')
-            break;
-        case 'task2': // do something
-            break;
-        default: // do something, or nothing
+    // use a filter
+    if (task == 'task1') {
+        applyFilter(canvas2, ctx2, img, 'wacky')
+    } else if (task == 'task2') {
+        
+    } else if (task == 'task3') {
+
+    } else if (task == 'task4') {
+
+    } else if (task == 'task5') {
+
+    } else if (task == 'task6') {
+
     }
 }
 
 /**
 * FILTERS
-* params: r, g, b, a, i
+* params: i, rgba
 */
 /**
  * NEWSPRINT
@@ -75,31 +81,8 @@ function filterNewsprint(i, rgba) {
     }
 }
 
-/**
- * THRESHOLD
- * @param {*} red 
- * @param {*} green 
- * @param {*} blue 
- * @param {*} rgba 
- * @param {*} i 
- */
-function filterThreshold(red, green, blue, rgba, i) {
-    let brightness = red + green + blue
-    let threshold = (3 * 255) / 2
-    if (brightness > threshold) {
-        rgba[i * 4 + 0] = 255
-        rgba[i * 4 + 1] = 255
-        rgba[i * 4 + 2] = 255
-    } else {
-        rgba[i * 4 + 0] = 0
-        rgba[i * 4 + 1] = 0
-        rgba[i * 4 + 2] = 0
-    }
-}
-
-function filterRandom(r, g, b) {
+function filterWacky(i, rgba) {
     // make sure this is doing it's job
-    console.log('this is called')
     r = 0//Math.random() * r * 2
     g = 0
     b = 0
@@ -127,7 +110,10 @@ function create(t, c, i) {
 }
 
 /**
- * Clears the param canvas
+ * Clears & resets the canvas
+ * @param {node} canvas 
+ * @param {object} context 
+ * @param {Image} image 
  */
 function clearCanvas(canvas, context, image) {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -136,9 +122,9 @@ function clearCanvas(canvas, context, image) {
 
 /**
  * Apply a filter
- * @param {canvas node} canvas 
- * @param {canvas.context object} context 
- * @param {Image object} image 
+ * @param {node} canvas 
+ * @param {object} context 
+ * @param {Image} image 
  * @param {String} filter
  */
 function applyFilter(canvas, context, image, filter) {
@@ -157,16 +143,12 @@ function applyFilter(canvas, context, image, filter) {
 
         // select filter
         switch (filter) {
-            case 'random': filterRandom(red, green, blue, alpha)
-            // the above is being called but the effect on the image is not evident
-            // add more later
+            case 'wacky': filterWacky(i, rgba)
+                break;
+            case 'newsprint': filterNewsprint(i, rgba)
+                break;
         }
     }
-/*
-    canvasModified.width = img.width
-    canvasModified.height = img.height
-
-*/
     // place filter on context/canvas
     context.putImageData(data, 0, 0)
 }
