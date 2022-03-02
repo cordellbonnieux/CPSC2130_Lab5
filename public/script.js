@@ -82,10 +82,10 @@ function filterNewsprint(i, rgba) {
 }
 
 function filterWacky(i, rgba) {
-    // make sure this is doing it's job
-    r = 0//Math.random() * r * 2
-    g = 0
-    b = 0
+    rgba[i * 4 + 0] *= Math.random() * 10
+    rgba[i * 4 + 1] *= Math.random() * 10
+    rgba[i * 4 + 2] *= Math.random() * 10
+    rgba[i * 4 + 3] *= Math.random() * 10
 }
 
 /**
