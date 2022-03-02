@@ -5,6 +5,12 @@
 const img = new Image()
 img.src = 'monkey.png'
 
+// titles
+const title1 = document.createElement('h1')
+title1.textContent = 'Original Image'
+const title2 = document.createElement('h1')
+title2.textContent = 'Filtered Image'
+
 // canvas 1
 const canvas1 = document.createElement('canvas')
 const ctx1 = canvas1.getContext('2d')
@@ -15,6 +21,8 @@ const ctx2 = canvas2.getContext('2d')
 
 // add canvases to doc
 const container = document.getElementById('container')
+container.appendChild(title1)
+container.appendChild(title2)
 container.appendChild(canvas1)
 container.appendChild(canvas2)
 
@@ -44,15 +52,20 @@ img.onload = () => {
 /**
  * Handle Events
  */
-
+/**
+ * Handle - handle button clicks
+ * @param {String} task 
+ */
 function handle(task) {
     // clear and reset the canvas
     clearCanvas(canvas2, ctx2, img)
     // use a filter
     if (task == 'task1') {
         applyFilter(canvas2, ctx2, img, 'wacky')
+        title2.textContent = 'Wacky Filter'
     } else if (task == 'task2') {
-        
+        applyFilter(canvas2, ctx2, img, 'quantize')
+        title2.textContent = 'Color Quantization'
     } else if (task == 'task3') {
 
     } else if (task == 'task4') {
@@ -69,23 +82,27 @@ function handle(task) {
 * params: i, rgba
 */
 /**
- * NEWSPRINT
- * @param {*} i 
- * @param {*} rgba 
+ * Wacky Filter - A Completely Random Filter
+ * @param {Integer} i 
+ * @param {Array} rgba 
  */
-function filterNewsprint(i, rgba) {
-    if (i % 25 == 0) {
-        rgba[i * 4 + 0] = 0
-        rgba[i * 4 + 1] = 0
-        rgba[i * 4 + 2] = 255
-    }
+function filterWacky(i, rgba) {
+    rgba[i * 4 + 0] *= Math.random() * Math.random() + Math.random()
+    rgba[i * 4 + 1] *= Math.random() * Math.random() + Math.random()
+    rgba[i * 4 + 2] *= Math.random() * Math.random() + Math.random()
+    rgba[i * 4 + 3] *= Math.random() * Math.random() + Math.random()
 }
 
-function filterWacky(i, rgba) {
-    rgba[i * 4 + 0] *= Math.random() * 10
-    rgba[i * 4 + 1] *= Math.random() * 10
-    rgba[i * 4 + 2] *= Math.random() * 10
-    rgba[i * 4 + 3] *= Math.random() * 10
+/**
+ * Color Quantization Filter
+ * @param {Integer} i 
+ * @param {Array} rgba 
+ */
+ function filterQuantize(i, rgba) {
+    rgba[i * 4 + 0] 
+    rgba[i * 4 + 1] 
+    rgba[i * 4 + 2] 
+    rgba[i * 4 + 3] 
 }
 
 /**
@@ -145,56 +162,10 @@ function applyFilter(canvas, context, image, filter) {
         switch (filter) {
             case 'wacky': filterWacky(i, rgba)
                 break;
-            case 'newsprint': filterNewsprint(i, rgba)
+            case 'quantize': filterQuantize(i, rgba)
                 break;
         }
     }
     // place filter on context/canvas
     context.putImageData(data, 0, 0)
 }
-
-// old stuff:
-/*
-img.onload = () => {
-    let canvas = document.createElement('canvas')
-    let ctx = canvas.getContext('2d')
-
-    //canvas.width = img.width
-    //canvas.height = img.height
-    console.log(canvas.width, canvas.height)
-    
-    document.body.appendChild(canvas)
-
-    ctx.drawImage(img, 0, 0)
-
-    let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-
-    // array of rgba values for all pixels in the image
-    let rgba = imgData.data
-
-    let numberOfPixels = img.width * img.height
-
-    for (let i = 0; i < numberOfPixels; i++) {
-        let red = rgba[i * 4 + 0]
-        let green = rgba[i * 4 + 1]
-        let blue = rgba[i * 4 + 2]
-        let alpha = rgba[i * 4 + 3]
-
-        // every 25th pixel
-        // new print effect
-        filterNewsprint(i, rgba)
-
-        //THRESHOLD FILTER
-        filterThreshold(red, green, blue, rgba, i)
-    }
-    
-    let canvasModified = document.createElement('canvas')
-    let ctxModified = canvasModified.getContext('2d')
-    canvasModified.width = img.width
-    canvasModified.height = img.height
-
-    document.body.appendChild(canvasModified)
-
-    ctxModified.putImageData(imgData, 0, 0)
-}
-*/
