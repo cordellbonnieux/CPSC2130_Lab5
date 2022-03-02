@@ -99,10 +99,38 @@ function filterWacky(i, rgba) {
  * @param {Array} rgba 
  */
  function filterQuantize(i, rgba) {
-    rgba[i * 4 + 0] 
-    rgba[i * 4 + 1] 
-    rgba[i * 4 + 2] 
-    rgba[i * 4 + 3] 
+    let palette = [
+        [100, 100, 100],
+        [23.5, 16.9, 6.7],
+        [52.9, 40, 23.9],
+        [82.7, 74.1, 54.5],
+        [92.5, 78.4, 69.8],
+        [58.8, 45.9, 28.2],
+        [4.3, 6.3, 7.8],
+        [65.5, 80, 91.4]
+    ]
+    let r = rgba[i * 4 + 0] 
+    let g = rgba[i * 4 + 1] 
+    let b = rgba[i * 4 + 2] 
+    let match = []
+    let lastDistance = r + g + b;
+    for (let y = 0; y < palette.length; y++) {
+        let differenceR = Math.pow((r - palette[y][0]), 2)
+        let differenceG = Math.pow((g - palette[y][1]), 2)
+        let differenceB = Math.pow((b - palette[y][2]), 2)
+        let nextDistance = Math.sqrt(differenceR + differenceG + differenceB)
+        if (nextDistance < lastDistance) {
+            lastDistance = nextDistance
+            match = [
+                palette[y][0], 
+                palette[y][1], 
+                palette[y][2]
+            ]
+        }
+    }
+    rgba[i * 4 + 0] = match[0]
+    rgba[i * 4 + 1] = match[1]
+    rgba[i * 4 + 2] = match[2]
 }
 
 /**
