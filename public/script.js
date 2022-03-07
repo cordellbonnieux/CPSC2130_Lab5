@@ -97,6 +97,7 @@ function handle(task) {
 */
 /**
  * Wacky Filter - A Completely Random Filter
+ * Filter for task 1
  * @param {Integer} i 
  * @param {Array} rgba 
  */
@@ -109,6 +110,7 @@ function filterWacky(i, rgba) {
 
 /**
  * Color Quantization Filter
+ * Filter for task 2
  * @param {Integer} i 
  * @param {Array} rgba 
  */
@@ -147,7 +149,7 @@ function filterWacky(i, rgba) {
     rgba[i * 4 + 2] = match[2]
 }
 /**
- * Task 3 Explination
+ * Task 3 Explaination
  * @param {*} t 
  * @param {*} c 
  * @param {*} i 
