@@ -83,7 +83,8 @@ function handle(task) {
         task3(canvas2, ctx2)
         title2.textContent = 'Encoding Indexed Images'
     } else if (task == 'task4') {
-
+        task4(canvas2, ctx2)
+        title2.textContent = 'Choosing a Palette for Color Quantization'
     } else if (task == 'task5') {
 
     } else if (task == 'task6') {
@@ -148,12 +149,11 @@ function filterWacky(i, rgba) {
     rgba[i * 4 + 1] = match[1]
     rgba[i * 4 + 2] = match[2]
 }
+
 /**
  * Task 3 Explaination
- * @param {*} t 
- * @param {*} c 
- * @param {*} i 
- * @returns 
+ * @param {node} canvas
+ * @param {object} context
  */
 function task3(canvas, context) {
     const max = canvas.width - 20
@@ -172,41 +172,75 @@ function task3(canvas, context) {
     const a1p2 = 'Thus, the image can be encoded using 3 bits per pixel (or, each pixel represented by three strings, RGB)'
     const a1p3 = '2^3bpp means that there are 8 possible colors per pixel of the image.'
     context.fillText(q1, 10, line, max)
-    context.fillText(a1, 10, line * 2, max)
-    context.fillText(a1p2, 10, line * 3, max)
-    context.fillText(a1p3, 10, line * 4, max)
+    context.fillText(a1, 10, line * 3, max)
+    context.fillText(a1p2, 10, line * 4, max)
+    context.fillText(a1p3, 10, line * 5, max)
 
     // Q2: how is each pixel encoded
     const q2 = 'Q2: How is each pixel encoded? (describe what information must be recorded to represent each pixel).'
     const a2 = 'A2: Each pixel\'s color from the original image needs to be compared with all 8 of the chosen colors in the palette.'
     const a2p2 = 'The replacement color, who\'s summed RGB values have the shortest average distance from the original pixel\'s (RGB)color, will be used.'
-    context.fillText(q2, 10, line * 6, max)
-    context.fillText(a2, 10, line * 7, max)
-    context.fillText(a2p2, 10, line * 8, max)
+    context.fillText(q2, 10, line * 8, max)
+    context.fillText(a2, 10, line * 10, max)
+    context.fillText(a2p2, 10, line * 11, max)
 
     // Q3: how many bits does it take to encode each ? 3bits?
     const q3 = 'Q3: How many bits does it take to encode each pixel?'
     const a3 = 'A3: Each pixel can be encoded using 3 bits(2^3bpp), which can represent all 8 colors in the palette.'
-    context.fillText(q3, 10, line * 10, max)
-    context.fillText(a3, 10, line * 11, max)
+    context.fillText(q3, 10, line * 14, max)
+    context.fillText(a3, 10, line * 16, max)
 
     // Q4: What would the final file size of this image be, in bits? In bytes? In kibibytes? (Explain each step in calculating your results.)
     const q4 = 'Q4: What would the final file size of this image be, in bits? In bytes? In kibibytes? (Explain each step in calculating your results.)'
     const a4 = 'A4: The final image size will be calculated using: pixel-image-height * pixel-image-width * bits-per-pixel = image-size-in-bits'
     const a4p2 = 'So, in my case this image is 1280px by 720px and it will be encoded at a pixel depth of 3 bits-per-pixel (the calculations below assume there is no other data in the image)'
     const a4p3 = 'bits = ' + bits + ', bytes = ' + bytes + ', kilobytes = ' + kb
-    context.fillText(q4, 10, line * 13, max)
-    context.fillText(a4, 10, line * 14, max)
-    context.fillText(a4p2, 10, line * 15, max)
-    context.fillText(a4p3, 10, line * 16, max)
+    context.fillText(q4, 10, line * 19, max)
+    context.fillText(a4, 10, line * 21, max)
+    context.fillText(a4p2, 10, line * 22, max)
+    context.fillText(a4p3, 10, line * 23, max)
 
     // Q5: It may be helpful to think about how your proposed encoding scheme would be decoded. What information do you need to encode to fully reconstruct the image?
     const q5 = 'Q5: It may be helpful to think about how your proposed encoding scheme would be decoded. What information do you need to encode to fully reconstruct the image?'
     const a5 = 'A5: In order to fully reconstruct the image the actual colors themselves also need to be represented and stored in the image file, so the pixels have colors to reference.'
     const a5p2 = 'This would require 24 bits (RGB = 8*3) to represent each of the 8 color strings, meaning an additional 192 (24 * 8) bits will be needed to store the color information.'
-    context.fillText(q5, 10, line * 18, max)
-    context.fillText(a5, 10, line * 19, max)
-    context.fillText(a5p2, 10, line * 20, max)
+    context.fillText(q5, 10, line * 26, max)
+    context.fillText(a5, 10, line * 28, max)
+    context.fillText(a5p2, 10, line * 29, max)
+}
+
+/**
+ * Task 4 Explaination
+ * @param {node} canvas
+ * @param {object} context
+ */
+function task4(canvas, context) {
+    const max = canvas.width - 20
+    const line = 20
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.font = (line - 2) + 'px Arial'
+
+    // Q1: What are some problems that could arise with this grayscale quantization
+    // method we used in the lesson?
+    const q1 = 'Q1: What are some problems that could arise with this grayscale quantization method we used in the lesson?'
+    const a1 = ''
+    context.fillText(q1, 10, line, max)
+    context.fillText(a1, 10, line * 3, max)
+
+    // Q2: Describe an example of an image for which this algorithm would not work well.
+    const q2 = 'Q2: Describe an example of an image for which this algorithm would not work well.'
+    const a2 = ''
+    context.fillText(q2, 10, line * 6, max)
+    context.fillText(a2, 10, line * 8, max)
+    
+    // Q3: Describe, on a high level, an algorithm that could be used to choose a
+    // palette of grays that would generally, for all images, work better than
+    // the method used in the lesson.
+    let q3 = 'Q3: Describe, on a high level, an algorithm that could be used to choose a '
+    q3 += 'palette of grays that would generally, for all images, work better than the method used in the lesson.'
+    const a3 = ''
+    context.fillText(q3, 10, line * 11, max)
+    context.fillText(a3, 10, line * 13, max)
 }
 
 /**
