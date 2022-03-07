@@ -1,3 +1,6 @@
+//author Cordell Bonnieux
+//title: CPSC 2130 Lab5
+// description:
 /**
  * Preload
  */
@@ -14,17 +17,27 @@ title2.textContent = 'Filtered Image'
 // canvas 1
 const canvas1 = document.createElement('canvas')
 const ctx1 = canvas1.getContext('2d')
+canvas1.width = img.width
+canvas1.height = img.height
 
 // canvas 2
 const canvas2 = document.createElement('canvas')
 const ctx2 = canvas2.getContext('2d')
+canvas2.width = img.width
+canvas2.height = img.height
+
+// wrappers
+const wrapper1 = document.createElement('div')
+wrapper1.appendChild(title1)
+wrapper1.appendChild(canvas1)
+const wrapper2 = document.createElement('div')
+wrapper2.appendChild(title2)
+wrapper2.appendChild(canvas2)
 
 // add canvases to doc
 const container = document.getElementById('container')
-container.appendChild(title1)
-container.appendChild(title2)
-container.appendChild(canvas1)
-container.appendChild(canvas2)
+container.appendChild(wrapper1)
+container.appendChild(wrapper2)
 
 // add controls
 const controls = document.getElementById('controls')
@@ -67,7 +80,8 @@ function handle(task) {
         applyFilter(canvas2, ctx2, img, 'quantize')
         title2.textContent = 'Color Quantization'
     } else if (task == 'task3') {
-
+        task3(canvas2, ctx2)
+        title2.textContent = 'Encoding Indexed Images'
     } else if (task == 'task4') {
 
     } else if (task == 'task5') {
@@ -99,7 +113,7 @@ function filterWacky(i, rgba) {
  * @param {Array} rgba 
  */
  function filterQuantize(i, rgba) {
-    let palette = [
+    const palette = [
         [100, 100, 100],
         [23.5, 16.9, 6.7],
         [52.9, 40, 23.9],
@@ -109,16 +123,16 @@ function filterWacky(i, rgba) {
         [4.3, 6.3, 7.8],
         [65.5, 80, 91.4]
     ]
-    let r = rgba[i * 4 + 0] 
-    let g = rgba[i * 4 + 1] 
-    let b = rgba[i * 4 + 2] 
+    const r = rgba[i * 4 + 0] 
+    const g = rgba[i * 4 + 1] 
+    const b = rgba[i * 4 + 2] 
     let match = []
     let lastDistance = r + g + b;
     for (let y = 0; y < palette.length; y++) {
-        let differenceR = Math.pow((r - palette[y][0]), 2)
-        let differenceG = Math.pow((g - palette[y][1]), 2)
-        let differenceB = Math.pow((b - palette[y][2]), 2)
-        let nextDistance = Math.sqrt(differenceR + differenceG + differenceB)
+        const differenceR = Math.pow((r - palette[y][0]), 2)
+        const differenceG = Math.pow((g - palette[y][1]), 2)
+        const differenceB = Math.pow((b - palette[y][2]), 2)
+        const nextDistance = Math.sqrt(differenceR + differenceG + differenceB)
         if (nextDistance < lastDistance) {
             lastDistance = nextDistance
             match = [
@@ -131,6 +145,31 @@ function filterWacky(i, rgba) {
     rgba[i * 4 + 0] = match[0]
     rgba[i * 4 + 1] = match[1]
     rgba[i * 4 + 2] = match[2]
+}
+/**
+ * Task 3 Explination
+ * @param {*} t 
+ * @param {*} c 
+ * @param {*} i 
+ * @returns 
+ */
+function task3(canvas, context) {
+    const max = canvas.width - 20
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.font = '10px Arial'
+    
+    //how should each color in the palette be encoded and how many bits 
+    //does it take to encode each color? 3 bits
+    const q1 = 'How should each color in the palette be encoded and how many bits does it take to encode each color?'
+    const a1 = '3 bits'
+    context.fillText(q1, 10, 24);
+    context.fillText(a1, 10, 24, max);
+    
+    // how is each pixel encoded
+
+    //how many bits does it take to encode each ? 3bits?
+
+    // new colros 24 bits x 8 colors
 }
 
 /**
@@ -161,7 +200,7 @@ function create(t, c, i) {
  * @param {Image} image 
  */
 function clearCanvas(canvas, context, image) {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height)
     context.drawImage(image, 0, 0, canvas.width, canvas.height)
 }
 
@@ -191,6 +230,8 @@ function applyFilter(canvas, context, image, filter) {
             case 'wacky': filterWacky(i, rgba)
                 break;
             case 'quantize': filterQuantize(i, rgba)
+                break;
+            case 'task3': task3(canvas, context)
                 break;
         }
     }

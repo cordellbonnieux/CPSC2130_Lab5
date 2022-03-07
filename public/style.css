@@ -1,5 +1,5 @@
 html, body {
-    margin: 0;
+    margin: 0 0 120px 0;
 }
 
 #container {
@@ -8,12 +8,13 @@ html, body {
     width: 100vw;
     flex-wrap: wrap;
     text-align: center;
+    justify-content: center;
 }
-
+/*
 #container * {
     width: 50vw;
 }
-
+*/
 #controls {
     display: flex;
     justify-content: center;
