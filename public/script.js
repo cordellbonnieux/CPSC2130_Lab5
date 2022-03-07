@@ -1,6 +1,12 @@
-//author Cordell Bonnieux
-//title: CPSC 2130 Lab5
-// description:
+/**
+* Title: CPSC 2130 Lab5
+* Author Cordell Bonnieux
+*
+* Description: This project contains a page with two canvases and a menu. The menu buttons correspond with the tasks in the lab document,
+* i.e if you click on 'task4', task 4's answers (or results) will be displayed on the 2nd canvas.
+* there is no need to comment or uncomment anything in this project, just fire it up and click on the task buttons to see the results.
+**/
+
 /**
  * Preload
  */
@@ -55,9 +61,8 @@ buttons.forEach((task) => {
 /**
  * On Start
  */
-// when the img is ready
+
 img.onload = () => {
-    // draw the pictures to the canvases
     ctx1.drawImage(img, 0, 0, canvas1.width, canvas1.height)
     ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height)
 }
@@ -65,9 +70,10 @@ img.onload = () => {
 /**
  * Handle Events
  */
+
 /**
  * Handle - handle button clicks
- * @param {String} task 
+ * @param {string} task 
  */
 function handle(task) {
     // clear and reset the canvas
@@ -94,13 +100,13 @@ function handle(task) {
 
 /**
 * FILTERS
-* params: i, rgba
 */
+
 /**
  * Wacky Filter - A Completely Random Filter
  * Filter for task 1
- * @param {Integer} i 
- * @param {Array} rgba 
+ * @param {integer} i 
+ * @param {array} rgba 
  */
 function filterWacky(i, rgba) {
     rgba[i * 4 + 0] *= Math.random() * Math.random() + Math.random()
@@ -112,8 +118,8 @@ function filterWacky(i, rgba) {
 /**
  * Color Quantization Filter
  * Filter for task 2
- * @param {Integer} i 
- * @param {Array} rgba 
+ * @param {integer} i 
+ * @param {array} rgba 
  */
  function filterQuantize(i, rgba) {
     const palette = [
@@ -246,11 +252,12 @@ function task4(canvas, context) {
 /**
  * HELPER FUCTIONS
  */
+
 /**
  * Create - an html element
- * @param {*} t tag
- * @param {*} c class
- * @param {*} i id
+ * @param {string} t tag
+ * @param {string} c class
+ * @param {string} i id
  * @returns html element
  */
 function create(t, c, i) {
@@ -268,7 +275,7 @@ function create(t, c, i) {
  * Clears & resets the canvas
  * @param {node} canvas 
  * @param {object} context 
- * @param {Image} image 
+ * @param {image} image 
  */
 function clearCanvas(canvas, context, image) {
     context.clearRect(0, 0, canvas.width, canvas.height)
@@ -279,8 +286,8 @@ function clearCanvas(canvas, context, image) {
  * Apply a filter
  * @param {node} canvas 
  * @param {object} context 
- * @param {Image} image 
- * @param {String} filter
+ * @param {image object} image 
+ * @param {string} filter
  */
 function applyFilter(canvas, context, image, filter) {
     // get data
