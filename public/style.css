@@ -2,29 +2,45 @@ html, body {
     margin: 0 0 120px 0;
 }
 
+.contain {
+    max-width: 1280px;
+    width: 80vw;
+    margin: 25px auto;
+}
+
+#info {
+    padding: 0 50px;
+}
+
 #container {
-    margin: 50px 0 0 0;
     display: flex;
-    width: 100vw;
     flex-wrap: wrap;
     text-align: center;
     justify-content: center;
 }
-/*
-#container * {
-    width: 50vw;
-}
-*/
+
 #controls {
     display: flex;
     justify-content: center;
+    position: fixed;
+    width: 100vw;
+    bottom: 0;
+    background-color:#000;
 }
 
 #controls div {
     font-size: 1.5em;
-    padding:5px 15px;
-    margin: 10px;
-    border: 1px solid #000;
-    background-color: pink;
+    padding:10px 25px;
+    margin: 10px 20px;
+    border: 3px dotted #fff;
+    color: #fff;
+    background-color: transparent;
     cursor: pointer;
+    font-weight: bold;
+    transition: 1s;
+}
+
+#controls div:hover {
+    background-color: #fff;
+    color: #000;
 }
