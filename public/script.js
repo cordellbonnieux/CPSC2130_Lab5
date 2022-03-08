@@ -95,11 +95,13 @@ function handle(task) {
 
     } else if (task == 'task6') {
 
+    } else if (task == 'task7') {
+
     }
 }
 
 /**
-* FILTERS
+* IMAGE FILTERS
 */
 
 /**
@@ -155,6 +157,10 @@ function filterWacky(i, rgba) {
     rgba[i * 4 + 1] = match[1]
     rgba[i * 4 + 2] = match[2]
 }
+
+/**
+ * TEXT ANSWERS
+ */
 
 /**
  * Task 3 Explaination
@@ -229,24 +235,45 @@ function task4(canvas, context) {
     // Q1: What are some problems that could arise with this grayscale quantization
     // method we used in the lesson?
     const q1 = 'Q1: What are some problems that could arise with this grayscale quantization method we used in the lesson?'
-    const a1 = ''
+    const a1 = 'A1: Using this algorithm to greyscale an image with low contrast, could result in colors being blurred together, obscuring the image.'
+    const a1p2 = 'This is because we are converting the colors based on their luminosity, and NOT simply replacing colors based on their proximity to a target color.'
     context.fillText(q1, 10, line, max)
     context.fillText(a1, 10, line * 3, max)
+    context.fillText(a1p2, 10, line * 4, max)
 
     // Q2: Describe an example of an image for which this algorithm would not work well.
     const q2 = 'Q2: Describe an example of an image for which this algorithm would not work well.'
-    const a2 = ''
-    context.fillText(q2, 10, line * 6, max)
-    context.fillText(a2, 10, line * 8, max)
+    const a2 = 'A2: An image with very low contrast, who\'s colors all have a similar luminosity.'
+    const a2p2 = 'This would likely cause several different colors, with similar luminosities to be repalce by the same or similar color.'
+    context.fillText(q2, 10, line * 7, max)
+    context.fillText(a2, 10, line * 9, max)
+    context.fillText(a2p2, 10, line * 10, max)
     
     // Q3: Describe, on a high level, an algorithm that could be used to choose a
     // palette of grays that would generally, for all images, work better than
     // the method used in the lesson.
-    let q3 = 'Q3: Describe, on a high level, an algorithm that could be used to choose a '
-    q3 += 'palette of grays that would generally, for all images, work better than the method used in the lesson.'
-    const a3 = ''
-    context.fillText(q3, 10, line * 11, max)
-    context.fillText(a3, 10, line * 13, max)
+    const q3 = 'Q3: Describe, on a high level, an algorithm that could be used to choose a palette of grays that would generally, for all images,'
+    const q3p2 = 'work better than the method used in the lesson.'
+    const a3 = 'A3: Using a combination of the quantization algorithm and the greyscale algorithm as data members, my theorized algorithim goes as follows:'
+    const a3p2 = '1. Create an object, which holds all possible colors as keys, and set each key to equal null.'
+    const a3p3 = '2. Iterrate over each RGB value in the image.'
+    const a3p4 = '3. Apply greyscale luminosity algorithm.'
+    const a3p5 = '4. If the resulting color in the object equals null, change it to that color.'
+    const a3p6 = '5. Else, apply the quantization algorithm to match to all potential colors.'
+    const a3p7 = '6. If the resulting color in the object equals null, change it to that color.'
+    const a3p8 = '7. Else, apply that color to the nearest vacant color.'
+    const a3p9 = '8. Else, apply that color to the median of the results of the first two steps (meaning one replacement color key can equal several colors[an array]).'
+    context.fillText(q3, 10, line * 13, max)
+    context.fillText(q3p2, 10, line * 14, max)
+    context.fillText(a3, 10, line * 16, max)
+    context.fillText(a3p2, 10, line * 18, max)
+    context.fillText(a3p3, 10, line * 19, max)
+    context.fillText(a3p4, 10, line * 20, max)
+    context.fillText(a3p5, 10, line * 21, max)
+    context.fillText(a3p6, 10, line * 22, max)
+    context.fillText(a3p7, 10, line * 23, max)
+    context.fillText(a3p8, 10, line * 24, max)
+    context.fillText(a3p9, 10, line * 25, max)
 }
 
 /**
