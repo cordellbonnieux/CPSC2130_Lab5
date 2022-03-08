@@ -92,7 +92,8 @@ function handle(task) {
         task4(canvas2, ctx2)
         title2.textContent = 'Choosing a Palette for Color Quantization'
     } else if (task == 'task5') {
-
+        applyFilter(canvas2, ctx2, img, 'random dithering')
+        title2.textContent = 'Random Dithering Algorithm Filter'
     } else if (task == 'task6') {
 
     } else if (task == 'task7') {
@@ -102,6 +103,8 @@ function handle(task) {
 
 /**
 * IMAGE FILTERS
+* params: i, rgba
+* description: Each filter filters a single pixel at a time
 */
 
 /**
@@ -156,6 +159,34 @@ function filterWacky(i, rgba) {
     rgba[i * 4 + 0] = match[0]
     rgba[i * 4 + 1] = match[1]
     rgba[i * 4 + 2] = match[2]
+}
+
+/**
+ * Random Dithering Filter
+ * @param {integer} i 
+ * @param {array} rgba 
+ */
+function filterRandomDithering(i, rgba) {
+    /**
+     * For each value in the image, simply generate a random number 1..256; 
+     * if it is greater than the image value at that point, plot the point white, 
+     * otherwise plot it black.  That's it. 
+     */
+    const r = rgba[i * 4 + 0]
+    const g = rgba[i * 4 + 1]
+    const b = rgba[i * 4 + 2]
+
+    const color = ((r + g + b) / 3) / 255
+
+    if (Math.random() > color) {
+        rgba[i * 4 + 0] = 255
+        rgba[i * 4 + 1] = 255
+        rgba[i * 4 + 2] = 255
+    } else {
+        rgba[i * 4 + 0] = 0
+        rgba[i * 4 + 1] = 0
+        rgba[i * 4 + 2] = 0
+    }
 }
 
 /**
@@ -277,6 +308,15 @@ function task4(canvas, context) {
 }
 
 /**
+ * 
+ * @param {*} t 
+ * @param {*} c 
+ * @param {*} i 
+ * @returns 
+ */
+
+
+/**
  * HELPER FUCTIONS
  */
 
@@ -336,8 +376,8 @@ function applyFilter(canvas, context, image, filter) {
                 break;
             case 'quantize': filterQuantize(i, rgba)
                 break;
-            case 'task3': task3(canvas, context)
-                break;
+            case 'random dithering': filterRandomDithering(i, rgba)
+                break
         }
     }
     // place filter on context/canvas
