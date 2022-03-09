@@ -23,14 +23,10 @@ title2.textContent = 'Filtered Image'
 // canvas 1
 const canvas1 = document.createElement('canvas')
 const ctx1 = canvas1.getContext('2d')
-canvas1.width = img.width
-canvas1.height = img.height
 
 // canvas 2
 const canvas2 = document.createElement('canvas')
 const ctx2 = canvas2.getContext('2d')
-canvas2.width = img.width
-canvas2.height = img.height
 
 // wrappers
 const wrapper1 = document.createElement('div')
@@ -63,6 +59,10 @@ buttons.forEach((task) => {
  */
 
 img.onload = () => {
+    canvas1.width = img.width
+    canvas1.height = img.height
+    canvas2.width = img.width
+    canvas2.height = img.height
     ctx1.drawImage(img, 0, 0, canvas1.width, canvas1.height)
     ctx2.drawImage(img, 0, 0, canvas2.width, canvas2.height)
 }
@@ -95,7 +95,8 @@ function handle(task) {
         applyFilter(canvas2, ctx2, img, 'random dithering')
         title2.textContent = 'Random Dithering Algorithm Filter'
     } else if (task == 'task6') {
-
+        applyFilter(canvas2, ctx2, img, 'resample')
+        title2.textContent = 'Resampling the image'
     } else if (task == 'task7') {
 
     }
@@ -163,15 +164,11 @@ function filterWacky(i, rgba) {
 
 /**
  * Random Dithering Filter
+ * filter for task 5
  * @param {integer} i 
  * @param {array} rgba 
  */
 function filterRandomDithering(i, rgba) {
-    /**
-     * For each value in the image, simply generate a random number 1..256; 
-     * if it is greater than the image value at that point, plot the point white, 
-     * otherwise plot it black.  That's it. 
-     */
     const r = rgba[i * 4 + 0]
     const g = rgba[i * 4 + 1]
     const b = rgba[i * 4 + 2]
@@ -187,6 +184,33 @@ function filterRandomDithering(i, rgba) {
         rgba[i * 4 + 1] = 0
         rgba[i * 4 + 2] = 0
     }
+}
+
+/**
+ * TASK 6 RESAMPLING
+ */
+
+
+function resample(i, rgba, targetRange) {
+    const r = rgba[i * 4 + 0]
+    const g = rgba[i * 4 + 1]
+    const b = rgba[i * 4 + 2]
+    const a = rgba[i * 4 + 3]
+
+
+}
+
+// this function is always returning 1
+// it needs to return an appropriate number to scale the image by
+function getResampleData(canvas, context, image) {
+    let larger = image.width > image.height ? image.width : image.height
+    let scale = 0
+    for (let i = 100; i > 0; i--) {
+        if (larger % i == 0 && (100 <= (larger / i) < 200)) {
+            scale = i
+        }
+    }
+    return scale
 }
 
 /**
@@ -363,6 +387,9 @@ function applyFilter(canvas, context, image, filter) {
     const rgba = data.data
     // get pixels
     const pixels = image.width * image.height
+    // extra steps for resampling, if applicable
+    let resampleScale = filter == 'resample' ? getResampleData(canvas, context, image) : 0
+    console.log(resampleScale)
     // iterrate over pixels and apply filter
     for (let i = 0; i < pixels; i++) {
         const red = rgba[i * 4 + 0]
@@ -372,12 +399,18 @@ function applyFilter(canvas, context, image, filter) {
 
         // select filter
         switch (filter) {
-            case 'wacky': filterWacky(i, rgba)
+            case 'wacky': 
+                filterWacky(i, rgba)
                 break;
-            case 'quantize': filterQuantize(i, rgba)
+            case 'quantize': 
+                filterQuantize(i, rgba)
                 break;
-            case 'random dithering': filterRandomDithering(i, rgba)
+            case 'random dithering': 
+                filterRandomDithering(i, rgba)
                 break
+            case 'resample': 
+                resample(i, rgba, resampleScale)
+                break;
         }
     }
     // place filter on context/canvas
