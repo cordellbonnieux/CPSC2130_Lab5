@@ -95,7 +95,9 @@ function handle(task) {
         applyFilter(canvas2, ctx2, img, 'random dithering')
         title2.textContent = 'Random Dithering Algorithm Filter'
     } else if (task == 'task6') {
-        applyFilter(canvas2, ctx2, img, 'resample')
+        //
+        resample(canvas2, ctx2, img)
+        //console.log(ctx2.getImageData(0, 0, canvas2.width, canvas2.height))
         title2.textContent = 'Resampling the image'
     } else if (task == 'task7') {
 
@@ -190,29 +192,75 @@ function filterRandomDithering(i, rgba) {
  * TASK 6 RESAMPLING
  */
 
+function resample(canvas, context, image) {
+    // big image data
+    let data = context.getImageData(0, 0, canvas.width, canvas.height)
+    const rgba = data.data
 
-function resample(i, rgba, targetRange) {
-    const r = rgba[i * 4 + 0]
-    const g = rgba[i * 4 + 1]
-    const b = rgba[i * 4 + 2]
-    const a = rgba[i * 4 + 3]
+    //console.log(rgba[3769])
 
+    // small image data
+    const smallData = new ImageData(100, 70)
+    let smallRgba = data.data
+    let count = 0
 
-}
-
-// this function is always returning 1
-// it needs to return an appropriate number to scale the image by
-function getResampleData(canvas, context, image) {
-    let larger = image.width > image.height ? image.width : image.height
-    let scale = 0
-    for (let i = 100; i > 0; i--) {
-        if (larger % i == 0 && (100 <= (larger / i) < 200)) {
-            scale = i
+    // 1000 x 700 is the desired crop coords
+    // multiplied by 4 for each RGBA value
+    for (let y = 0; y < 1000; y++) {
+        for (let x = 0; x < 700; x++) {
+            if (y % 10 == 0 && x % 10 == 0) {
+                let i = y * 1000 * 4 * 4 + x
+                //console.log('count #' + count, 'pixel #' + i)
+                smallRgba[count] = rgba[i]
+                smallRgba[count + 1] = rgba[i + 1]
+                smallRgba[count + 2] = rgba[i + 2]
+                smallRgba[count + 3] = rgba[i + 3]
+                count += 4
+                //console.log(count)
+            }
         }
     }
-    return scale
+    //smallRgba.forEach((color) => console.log(color))
+    //console.log('count = ' + count)
+    //console.log('count should = ' + 100 * 70 * 4)
+    context.putImageData(smallData, 100, 100)
+    
 }
 
+/**
+ * 
+ * @param {integer} i index of original img rgba 
+ * @param {*} rgba rgba of original img
+ * @param {*} divisor factor of 10 to reduce image size
+ * @param {*} data small img data obj
+ * @param {*} counter index of small img rgba
+ */
+/*
+function resample(i, rgba, divisor, data, counter) {
+    let smallRes = data.width * data.height
+    if (counter <= smallRes) {
+        data.data[counter * 4] = rgba[i * 4]
+        data.data[counter * 4 + 1] = rgba[i * 4 + 1]
+        data.data[counter * 4 + 2] = rgba[i * 4 + 2]
+        data.data[counter * 4 + 3] = rgba[i * 4 + 3]
+    }
+}
+
+function getResampleDivisor(canvas, context, image) {
+    let dividing = true
+    let largerValue = image.width > image.height ? image.width : image.height
+    let divisor = 1
+    while (dividing) {
+        if (largerValue >= 1000) {
+            largerValue /= 10
+            divisor *= 10
+        } else {
+            dividing = false
+        }
+    }
+    return divisor
+}
+*/
 /**
  * TEXT ANSWERS
  */
@@ -332,15 +380,6 @@ function task4(canvas, context) {
 }
 
 /**
- * 
- * @param {*} t 
- * @param {*} c 
- * @param {*} i 
- * @returns 
- */
-
-
-/**
  * HELPER FUCTIONS
  */
 
@@ -382,14 +421,19 @@ function clearCanvas(canvas, context, image) {
  */
 function applyFilter(canvas, context, image, filter) {
     // get data
-    const data = context.getImageData(0, 0, canvas.width, canvas.height)
+    let data = context.getImageData(0, 0, canvas.width, canvas.height)
     // get rgba
     const rgba = data.data
     // get pixels
     const pixels = image.width * image.height
+    // create spawn point
+    let spawnX = 0
+    let spawnY = 0
     // extra steps for resampling, if applicable
-    let resampleScale = filter == 'resample' ? getResampleData(canvas, context, image) : 0
-    console.log(resampleScale)
+    let resampleDivisor = filter == 'resample' ? getResampleDivisor(canvas, context, image) : 0
+    let smallImgData = filter == 'resample' ? new ImageData((image.width / resampleDivisor), (image.height / resampleDivisor)) : null
+    //let smallImgRes = smallImgData.width * smallImgData.height
+    let smallImgCounter = 0
     // iterrate over pixels and apply filter
     for (let i = 0; i < pixels; i++) {
         const red = rgba[i * 4 + 0]
@@ -408,11 +452,7 @@ function applyFilter(canvas, context, image, filter) {
             case 'random dithering': 
                 filterRandomDithering(i, rgba)
                 break
-            case 'resample': 
-                resample(i, rgba, resampleScale)
-                break;
         }
     }
-    // place filter on context/canvas
-    context.putImageData(data, 0, 0)
+    context.putImageData(data, spawnX, spawnY)
 }
