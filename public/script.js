@@ -96,7 +96,7 @@ function handle(task) {
         title2.textContent = 'Random Dithering Algorithm Filter'
     } else if (task == 'task6') {
         resample(canvas2, ctx2, img)
-        title2.textContent = 'Resampling the image'
+        title2.textContent = 'Resampled Image'
     } else if (task == 'task7') {
 
     }
@@ -190,6 +190,14 @@ function filterRandomDithering(i, rgba) {
  * TASK 6 RESAMPLING
  */
 
+/**
+ * Resample
+ * Resamples the image on the canvas down by a factor of 10
+ * currently only works with the particular image used in this lab
+ * @param {canvas node} canvas 
+ * @param {canvas node context object} context 
+ * @param {image object} image 
+ */
 function resample(canvas, context, image) {
     // big image data
     let data = context.getImageData(0, 0, canvas.width, canvas.height)
@@ -197,12 +205,13 @@ function resample(canvas, context, image) {
     let pixelsX = data.width * 4 
     let pixelsY = data.height * 4 
 
-    // small image data
+    // small image data, scaled down by a factor of 10
     const smallData = new ImageData(128, 72)
     let smallRgba = smallData.data
     let count = 0
 
-    // take every tenth pixel in x and y direction
+    // take every tenth pixel in x and y direction from the large image
+    // and place it at the nth position in the small image
     for (let y = 0; y < pixelsY; y++) {
         for (let x = 0; x < pixelsX; x++) {
             if ((y / 4) % 10 == 0 && (x / 4) % 10 == 0) {
@@ -216,11 +225,11 @@ function resample(canvas, context, image) {
         }
     }
 
-    // print coords
+    // coords for printing image
     let sx = canvas.width / 2 - smallData.width / 2
     let sy = canvas.height / 2 - smallData.height / 2
 
-    // clear canvas and place re-sized image
+    // clear canvas and place re-sampled image
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.putImageData(smallData, sx, sy)
 }
