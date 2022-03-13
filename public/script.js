@@ -95,9 +95,7 @@ function handle(task) {
         applyFilter(canvas2, ctx2, img, 'random dithering')
         title2.textContent = 'Random Dithering Algorithm Filter'
     } else if (task == 'task6') {
-        //
         resample(canvas2, ctx2, img)
-        //console.log(ctx2.getImageData(0, 0, canvas2.width, canvas2.height))
         title2.textContent = 'Resampling the image'
     } else if (task == 'task7') {
 
@@ -196,71 +194,37 @@ function resample(canvas, context, image) {
     // big image data
     let data = context.getImageData(0, 0, canvas.width, canvas.height)
     const rgba = data.data
-
-    //console.log(rgba[3769])
+    let pixelsX = data.width * 4 
+    let pixelsY = data.height * 4 
 
     // small image data
-    const smallData = new ImageData(100, 70)
-    let smallRgba = data.data
+    const smallData = new ImageData(128, 72)
+    let smallRgba = smallData.data
     let count = 0
 
-    // 1000 x 700 is the desired crop coords
-    // multiplied by 4 for each RGBA value
-    for (let y = 0; y < 1000; y++) {
-        for (let x = 0; x < 700; x++) {
-            if (y % 10 == 0 && x % 10 == 0) {
-                let i = y * 1000 * 4 * 4 + x
-                //console.log('count #' + count, 'pixel #' + i)
+    // take every tenth pixel in x and y direction
+    for (let y = 0; y < pixelsY; y++) {
+        for (let x = 0; x < pixelsX; x++) {
+            if ((y / 4) % 10 == 0 && (x / 4) % 10 == 0) {
+                let i = y * image.width + x
                 smallRgba[count] = rgba[i]
                 smallRgba[count + 1] = rgba[i + 1]
                 smallRgba[count + 2] = rgba[i + 2]
-                smallRgba[count + 3] = rgba[i + 3]
+                smallRgba[count + 3] = 255
                 count += 4
-                //console.log(count)
             }
         }
     }
-    //smallRgba.forEach((color) => console.log(color))
-    //console.log('count = ' + count)
-    //console.log('count should = ' + 100 * 70 * 4)
-    context.putImageData(smallData, 100, 100)
-    
+
+    // print coords
+    let sx = canvas.width / 2 - smallData.width / 2
+    let sy = canvas.height / 2 - smallData.height / 2
+
+    // clear canvas and place re-sized image
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.putImageData(smallData, sx, sy)
 }
 
-/**
- * 
- * @param {integer} i index of original img rgba 
- * @param {*} rgba rgba of original img
- * @param {*} divisor factor of 10 to reduce image size
- * @param {*} data small img data obj
- * @param {*} counter index of small img rgba
- */
-/*
-function resample(i, rgba, divisor, data, counter) {
-    let smallRes = data.width * data.height
-    if (counter <= smallRes) {
-        data.data[counter * 4] = rgba[i * 4]
-        data.data[counter * 4 + 1] = rgba[i * 4 + 1]
-        data.data[counter * 4 + 2] = rgba[i * 4 + 2]
-        data.data[counter * 4 + 3] = rgba[i * 4 + 3]
-    }
-}
-
-function getResampleDivisor(canvas, context, image) {
-    let dividing = true
-    let largerValue = image.width > image.height ? image.width : image.height
-    let divisor = 1
-    while (dividing) {
-        if (largerValue >= 1000) {
-            largerValue /= 10
-            divisor *= 10
-        } else {
-            dividing = false
-        }
-    }
-    return divisor
-}
-*/
 /**
  * TEXT ANSWERS
  */
